@@ -74,7 +74,7 @@ class LaserScanComp(VispyManager):
     diff_labels = np.where(np.all(self.scan_a.sem_label_color==0,axis=-1,keepdims=True), 0, diff_labels)
     self.scan_c.open_scan(self.scan_names[self.offset])
     
-    self.scan_c.sem_label = diff_labels
+    self.scan_c.set_label(diff_labels[:,0])
 
 
     self.scan_c.colorize()
