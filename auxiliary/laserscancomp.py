@@ -27,7 +27,7 @@ class LaserScanComp(VispyManager):
     self.img_inst_a_vis = None
     self.img_inst_b_view = None
     self.img_inst_b_vis = None
-    self.scan_a, self.scan_b = scans
+    self.scan_a, self.scan_b, self.scan_c = scans
     self.scan_names = scan_names
     self.label_a_names, self.label_b_names = label_names
     self.link = link
@@ -40,25 +40,16 @@ class LaserScanComp(VispyManager):
     """prepares the canvas(es) for the visualizer"""
     self.scan_a_view, self.scan_a_vis = super().add_viewbox(0, 0)
     self.scan_b_view, self.scan_b_vis = super().add_viewbox(0, 1)
+    self.scan_c_view, self.scan_c_vis = super().add_viewbox(0, 2)
 
     if self.link:
       self.scan_a_view.camera.link(self.scan_b_view.camera)
+      self.scan_c_view.camera.link(self.scan_a_view.camera)
 
     if self.images:
       self.img_a_view, self.img_a_vis = super().add_image_viewbox(0, 0)
       self.img_b_view, self.img_b_vis = super().add_image_viewbox(1, 0)
-
-      if self.instances:
-        self.img_inst_a_view, self.img_inst_a_vis = super().add_image_viewbox(2, 0)
-        self.img_inst_b_view, self.img_inst_b_vis = super().add_image_viewbox(3, 0)
-
-    if self.instances:
-      self.inst_a_view, self.inst_a_vis = super().add_viewbox(1, 0)
-      self.inst_b_view, self.inst_b_vis = super().add_viewbox(1, 1)
-
-      if self.link:
-        self.scan_a_view.camera.link(self.inst_a_view.camera)
-        self.inst_a_view.camera.link(self.inst_b_view.camera)
+      self.img_c_view, self.img_c_vis = super().add_image_viewbox(2, 0)
 
   def update_scan(self):
     """updates the scans, images and instances"""
@@ -78,27 +69,28 @@ class LaserScanComp(VispyManager):
                           edge_color=self.scan_b.sem_label_color[..., ::-1],
                           size=3.5,edge_width=0.0)
 
-    if self.instances:
-      self.inst_a_vis.set_data(self.scan_a.points,
-                               face_color=self.scan_a.inst_label_color[..., ::-1],
-                               edge_color=self.scan_a.inst_label_color[..., ::-1],
-                               size=1)
-      self.inst_b_vis.set_data(self.scan_b.points,
-                               face_color=self.scan_b.inst_label_color[..., ::-1],
-                               edge_color=self.scan_b.inst_label_color[..., ::-1],
-                               size=1)
+
+    diff_labels = np.where(self.scan_a.sem_label==self.scan_b.sem_label, 1, 2)
+    diff_labels = np.where(self.scan_a.sem_label==0, 0, diff_labels)
+    self.scan_c.open_scan(self.scan_names[self.offset])
+    
+    self.scan_c.sem_label = diff_labels
+
+
+    self.scan_c.colorize()
+    self.scan_c_vis.set_data(self.scan_c.points,
+                          face_color=self.scan_c.sem_label_color[..., ::-1],
+                          edge_color=self.scan_c.sem_label_color[..., ::-1],
+                          size=3.5,edge_width=0.0)
 
     if self.images:
       self.img_a_vis.set_data(self.scan_a.proj_sem_color[..., ::-1])
       self.img_a_vis.update()
       self.img_b_vis.set_data(self.scan_b.proj_sem_color[..., ::-1])
       self.img_b_vis.update()
+      self.img_c_vis.set_data(self.scan_c.proj_sem_color[..., ::-1])
+      self.img_c_vis.update()
 
-      if self.instances:
-        self.img_inst_a_vis.set_data(self.scan_a.proj_inst_color[..., ::-1])
-        self.img_inst_a_vis.update()
-        self.img_inst_b_vis.set_data(self.scan_b.proj_inst_color[..., ::-1])
-        self.img_inst_b_vis.update()
 
   def save_camera(self):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
