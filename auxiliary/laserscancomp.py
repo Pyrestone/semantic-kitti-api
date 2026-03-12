@@ -66,16 +66,16 @@ class LaserScanComp(VispyManager):
     self.scan_a.open_label(self.label_a_names[self.offset])
     self.scan_a.colorize()
     self.scan_a_vis.set_data(self.scan_a.points,
-                          face_color=self.scan_a.sem_label_color[..., ::-1],
-                          edge_color=self.scan_a.sem_label_color[..., ::-1],
+                          face_color=self.scan_a.sem_label_color[..., ::],
+                          edge_color=self.scan_a.sem_label_color[..., ::],
                           size=3.5,edge_width=0.0)
 
     self.scan_b.open_scan(self.scan_names[self.offset])
     self.scan_b.open_label(self.label_b_names[self.offset])
     self.scan_b.colorize()
     self.scan_b_vis.set_data(self.scan_b.points,
-                          face_color=self.scan_b.sem_label_color[..., ::-1],
-                          edge_color=self.scan_b.sem_label_color[..., ::-1],
+                          face_color=self.scan_b.sem_label_color[..., ::],
+                          edge_color=self.scan_b.sem_label_color[..., ::],
                           size=3.5,edge_width=0.0)
 
     if self.instances:
@@ -89,9 +89,9 @@ class LaserScanComp(VispyManager):
                                size=1)
 
     if self.images:
-      self.img_a_vis.set_data(self.scan_a.proj_sem_color[..., ::-1])
+      self.img_a_vis.set_data(self.scan_a.proj_sem_color[..., ::])
       self.img_a_vis.update()
-      self.img_b_vis.set_data(self.scan_b.proj_sem_color[..., ::-1])
+      self.img_b_vis.set_data(self.scan_b.proj_sem_color[..., ::])
       self.img_b_vis.update()
 
       if self.instances:
