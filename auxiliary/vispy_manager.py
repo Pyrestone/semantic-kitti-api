@@ -24,9 +24,9 @@ class VispyManager(ABC):
   def add_canvas(self, keys, title, size=None):
     canvas = None
     if size:
-      canvas = SceneCanvas(keys=keys, show=True, size=size, title=title)
+      canvas = SceneCanvas(keys=keys, show=True, size=size, title=title, bgcolor="white")
     else:
-      canvas = SceneCanvas(keys=keys, show=True, title=title)
+      canvas = SceneCanvas(keys=keys, show=True, title=title, bgcolor="white")
 
     canvas.events.key_press.connect(self.key_press)
     canvas.events.draw.connect(self.draw)
@@ -52,7 +52,7 @@ class VispyManager(ABC):
   def add_viewbox(self, row, col, border_color='white'):
     view = vispy.scene.widgets.ViewBox(border_color=border_color, parent=self.canvas.scene)
     self.grid.add_widget(view, row, col)
-    vis = visuals.Markers()
+    vis = visuals.Markers(antialias=0)
     view.camera = 'turntable'
     view.add(vis)
     visuals.XYZAxis(parent=view.scene)

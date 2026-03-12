@@ -111,7 +111,7 @@ if __name__ == '__main__':
     quit()
 
   # fix sequence name
-  FLAGS.sequence = '{0:02d}'.format(int(FLAGS.sequence))
+  FLAGS.sequence = '{0:04d}'.format(int(FLAGS.sequence))
 
   # does sequence folder exist?
   scan_paths = os.path.join(FLAGS.dataset, "sequences", FLAGS.sequence, "velodyne")

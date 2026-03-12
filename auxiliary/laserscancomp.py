@@ -64,7 +64,7 @@ class LaserScanComp(VispyManager):
     self.scan_a_vis.set_data(self.scan_a.points,
                           face_color=self.scan_a.sem_label_color[..., ::-1],
                           edge_color=self.scan_a.sem_label_color[..., ::-1],
-                          size=1)
+                          size=3.5,edge_width=0.0)
 
     self.scan_b.open_scan(self.scan_names[self.offset])
     self.scan_b.open_label(self.label_b_names[self.offset])
@@ -72,7 +72,7 @@ class LaserScanComp(VispyManager):
     self.scan_b_vis.set_data(self.scan_b.points,
                           face_color=self.scan_b.sem_label_color[..., ::-1],
                           edge_color=self.scan_b.sem_label_color[..., ::-1],
-                          size=1)
+                          size=3.5,edge_width=0.0)
 
     if self.instances:
       self.inst_a_vis.set_data(self.scan_a.points,

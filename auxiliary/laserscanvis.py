@@ -90,7 +90,7 @@ class LaserScanVis:
 
       # new canvas for img
       self.img_canvas = SceneCanvas(keys='interactive', show=True,
-                                    size=(self.canvas_W, self.canvas_H * self.multiplier))
+                                    size=(self.canvas_W, self.canvas_H * self.multiplier),bgcolor="white")
       # grid
       self.img_grid = self.img_canvas.central_widget.add_grid()
       # interface (n next, b back, q quit, very simple)
