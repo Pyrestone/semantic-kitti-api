@@ -80,7 +80,9 @@ class VispyManager(ABC):
       self.update_scan()
     elif event.key == 'Q' or event.key == 'Escape':
       self.destroy()
-
+    elif event.key == "S":
+      self.save_camera()
+         
   def destroy(self):
     if self.canvas:
       self.canvas.close()
@@ -103,4 +105,8 @@ class VispyManager(ABC):
 
   @abstractmethod
   def reset(self):
+    raise NotImplementedError
+
+  @abstractmethod
+  def save_camera(self):
     raise NotImplementedError

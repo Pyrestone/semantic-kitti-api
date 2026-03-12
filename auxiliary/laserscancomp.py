@@ -2,12 +2,14 @@
 # This file is covered by the LICENSE file in the root of this project.
 
 from auxiliary.vispy_manager import VispyManager
+from datetime import datetime
+import json
 import numpy as np
 
 class LaserScanComp(VispyManager):
   """Class that creates and handles a side-by-side pointcloud comparison"""
 
-  def __init__(self, scans, scan_names, label_names, offset=0, images=True, instances=False, link=False):
+  def __init__(self, scans, scan_names, label_names, offset=0, images=True, instances=False, link=False, camera_state:str=None):
     super().__init__(offset, len(scan_names), images, instances)
     self.scan_a_view = None
     self.scan_a_vis = None
@@ -31,6 +33,8 @@ class LaserScanComp(VispyManager):
     self.link = link
     self.reset()
     self.update_scan()
+    if camera_state is not None:
+      self.load_camera_state(camera_state)
 
   def reset(self):
     """prepares the canvas(es) for the visualizer"""
@@ -95,4 +99,22 @@ class LaserScanComp(VispyManager):
         self.img_inst_a_vis.update()
         self.img_inst_b_vis.set_data(self.scan_b.proj_inst_color[..., ::-1])
         self.img_inst_b_vis.update()
+
+  def save_camera(self):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"camera_state_{timestamp}.json"
+    camera_state = self.scan_a_view.camera.get_state()
+    state = {"camera_state": camera_state}
+    
+
+    with open(filename, "w") as f:
+      json.dump(state, f, indent=4)
+
+    print(f"Saved camera state as: {filename}")
+
+  def load_camera_state(self, camera_state):
+    with open(camera_state, "r") as file:
+      state = json.load(file)
+    
+    self.scan_a_view.camera.set_state(state["camera_state"])
 

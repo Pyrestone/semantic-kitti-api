@@ -78,6 +78,10 @@ if __name__ == '__main__':
       'Defaults to %(default)s',
   )
   parser.add_argument(
+    '--camera_state',
+    required=False
+  )
+  parser.add_argument(
     '--color_learning_map',
     dest='color_learning_map',
     default=False,
@@ -111,7 +115,8 @@ if __name__ == '__main__':
     quit()
 
   # fix sequence name
-  FLAGS.sequence = '{0:04d}'.format(int(FLAGS.sequence))
+  # FLAGS.sequence = '{0:02d}'.format(int(FLAGS.sequence))
+
 
   # does sequence folder exist?
   scan_paths = os.path.join(FLAGS.dataset, "sequences", FLAGS.sequence, "velodyne")
@@ -172,7 +177,7 @@ if __name__ == '__main__':
   vis = LaserScanComp(scans=(scan_a, scan_b),
                      scan_names=scan_names,
                      label_names=(label_a_names, label_b_names),
-                     offset=FLAGS.offset, images=images, instances=FLAGS.do_instances, link=FLAGS.link)
+                     offset=FLAGS.offset, images=images, instances=FLAGS.do_instances, link=FLAGS.link, camera_state=FLAGS.camera_state)
 
   # print instructions
   print("To navigate:")
