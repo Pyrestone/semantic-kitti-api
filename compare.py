@@ -172,9 +172,12 @@ if __name__ == '__main__':
   scan_b = SemLaserScan(color_dict, project=True)
   scan_a = SemLaserScan(color_dict, project=True)
 
+  color_dict_diff = {0: [240, 240, 240], 1:[128, 128, 128], 2:[0,0,255]} # 0: unlabeled, 1: correct, 2: wrong
+  scan_c = SemLaserScan(color_dict_diff, project=True)
+
   # create a visualizer
   images = not FLAGS.ignore_images
-  vis = LaserScanComp(scans=(scan_a, scan_b),
+  vis = LaserScanComp(scans=(scan_a, scan_b, scan_c),
                      scan_names=scan_names,
                      label_names=(label_a_names, label_b_names),
                      offset=FLAGS.offset, images=images, instances=FLAGS.do_instances, link=FLAGS.link, camera_state=FLAGS.camera_state)
