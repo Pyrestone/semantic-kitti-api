@@ -119,7 +119,7 @@ if __name__ == '__main__':
 
 
   # does sequence folder exist?
-  scan_paths = os.path.join(FLAGS.dataset, "sequences", FLAGS.sequence, "velodyne")
+  scan_paths = os.path.join(FLAGS.dataset, FLAGS.sequence, "velodyne")
 
   if os.path.isdir(scan_paths):
     print("Sequence folder a exists! Using sequence from %s" % scan_paths)
@@ -136,8 +136,8 @@ if __name__ == '__main__':
   # does sequence folder exist?
   assert len(FLAGS.labels) == 2
   labels_a, labels_b = FLAGS.labels[0], FLAGS.labels[1]
-  label_a_paths = os.path.join(FLAGS.dataset, "sequences", FLAGS.sequence, labels_a)
-  label_b_paths = os.path.join(FLAGS.dataset, "sequences", FLAGS.sequence, labels_b)
+  label_a_paths = os.path.join(FLAGS.dataset, FLAGS.sequence, labels_a)
+  label_b_paths = os.path.join(FLAGS.dataset, FLAGS.sequence, labels_b)
 
   if os.path.isdir(label_a_paths):
     print("Labels folder a exists! Using labels from %s" % label_a_paths)
