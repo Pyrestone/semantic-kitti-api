@@ -64,6 +64,7 @@ class LaserScanComp(VispyManager):
     self.scan_b.open_scan(self.scan_names[self.offset])
     self.scan_b.open_label(self.label_b_names[self.offset])
     self.scan_b.colorize()
+    self.scan_b.sem_label_color = np.where(np.all(self.scan_a.sem_label_color==0, axis=-1, keepdims=True), np.zeros((1,3)), self.scan_b.sem_label_color)
     self.scan_b_vis.set_data(self.scan_b.points,
                           face_color=self.scan_b.sem_label_color[..., ::],
                           edge_color=self.scan_b.sem_label_color[..., ::],
